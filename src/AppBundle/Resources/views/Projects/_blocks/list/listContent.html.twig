@@ -1,0 +1,36 @@
+{% trans_default_domain "Projects" %}
+<div class="taskList_head">
+    {{ list.title|trans }}
+</div>
+<div class="taskList_body">
+    {% for issue in projectService.getIssueByList(list.name,project) %}
+        <div class="issueMiniBlock">
+            <div class="issueMiniBlock_statusLine"></div>
+            <div class="issueMiniBlock_infoBox" style="cursor: pointer;" onclick="ListController.viewIssue({{ issue.id }});">
+                <div>{{ issue.name }} | {{ issue.title }}</div>
+            </div>
+            <div class="issueMiniBlock_rightBlock">
+                <div class="dropdown">
+                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="javascript:;" onclick="ListController.viewIssue({{ issue.id }});">{% trans %}View issue{% endtrans %}</a></li>
+                        <li><a href="#">{% trans %}Send to{% endtrans %}</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">{% trans %}Close issue{% endtrans %}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-default">
+            {% trans %}Issue list is empty{% endtrans %}
+        </div>
+    {% endfor %}
+</div>
+<div class="taskList_foot">
+    <button class="btn btn-primary" onclick="ListController.newIssue('{{ list.name }}')">
+        {% trans %}Add new issue{% endtrans %}
+    </button>
+</div>

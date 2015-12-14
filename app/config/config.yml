@@ -1,0 +1,151 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: ru
+
+framework:
+    #esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        assets_version: 0.0.1
+        assets_version_format:  "%%1$s?v=%%2$s"
+        packages:
+             css:
+                version: 0.0.1
+                version_format: "%%1$s?v=%%2$s"
+             jsApp:
+                version: 0.0.1
+                version_format: "%%1$s?v=%%2$s"
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+        fos_csrf_provider: "@form.csrf_provider"
+        projectService: "@projectService"
+        helperService: "@helperService"
+    form:
+        resources: ['bootstrap_3_layout.html.twig']
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [ ]
+    #java: /usr/bin/java
+    filters:
+        less:
+            node: /usr/bin/nodejs
+            node_paths: [/usr/local/lib/node_modules]
+            apply_to: "\.less$"
+        cssrewrite: ~
+        #closure:
+        #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+        #yui_css:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        mapping_types:
+            enum: string
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        #naming_strategy: doctrine.orm.naming_strategy.underscore
+        default_entity_manager: default
+        resolve_target_entities:
+            Symfony\Component\Security\Core\User\UserInterface: UserBundle\Entity\User
+        #auto_mapping: true
+        entity_managers:
+            default:
+                mappings:
+                    AppBundle: ~
+                    UserBundle: ~
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: UserBundle\Entity\User
+easy_admin:
+    site_name: 'EMDI admin'
+    entities:
+        User:
+            label: app.user
+            class: UserBundle\Entity\User
+            list:
+                fields:
+                    - 'id'
+                    - { property: 'username', label: 'Username' }
+                    - { property: 'email', label: 'Email' }
+                    - { property: 'enabled', label: 'Enabled' }
+                    - { property: 'locked', label: 'Locked' }
+                    - { property: 'lastLogin', label: 'Last Login' }
+                    - { property: 'phone', label: 'Phone' }
+            form:
+                fields:
+                    - { property: 'name', label: 'Name' }
+                    - { property: 'username', label: 'Username' }
+                    - { property: 'username_canonical', label: 'Username Canonical' }
+                    - { property: 'email', label: 'Email' }
+                    - { property: 'email_canonical', label: 'Email Canonical' }
+                    - { property: 'enabled', label: 'Enabled' }
+                    - { property: 'locked', label: 'Locked' }
+                    - { property: 'roles', label: 'Roles' }
+                    - { property: 'phone', label: 'Phone' }
+        Phones:
+            label: app.phones
+            class: AppBundle\Entity\Phones
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+# TWITTER BOOTSTRAP
+braincrafted_bootstrap:
+    less_filter: less
+    auto_configure:
+        assetic: true
+        twig: true
+        knp_menu: true
+        knp_paginator: true

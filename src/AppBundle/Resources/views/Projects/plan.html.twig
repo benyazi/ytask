@@ -1,0 +1,10 @@
+{% extends 'AppBundle:_template:projects.html.twig' %}
+{% trans_default_domain "AppBundle:Projects" %}
+{% block body %}
+    <div class="row" style="padding-top: 15px;">
+        PLAN
+    </div>
+{% endblock %}
+{% block controllerModals %}
+    {% include 'AppBundle:_template:modals/issueView.html.twig' %}
+{% endblock%}

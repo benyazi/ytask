@@ -1,0 +1,33 @@
+{% extends 'AppBundle:_template:projects.html.twig' %}
+{% trans_default_domain "AppBundle:Projects" %}
+{% block body %}
+    <div class="row" style="padding-top: 15px;">
+        {% set listArray = [
+        {name:'TODO',title:"To do"},
+        {name:'INPROGRESS',title:"In progress"},
+        {name:'TESTING',title:"Testing"},
+        {name:'DONE',title:"Done"}
+        ] %}
+        {% for list in listArray %}
+        <div class="col-xs-3">
+            <div class="taskList" id="list_{{ list.name }}">
+
+            </div>
+        </div>
+        {% endfor %}
+        <script>
+            $(document).ready( function () {
+                ListController = new ListController({
+                    getListUrl: "{{ url('_project_get_list', {}) }}",
+                    getIssueUrl: "{{ url('_project_get_issue', {}) }}",
+                    saveUrl: "{{ url('_project_save_issue', {}) }}",
+                    projectId: {{ project.id }}
+                });
+            });
+        </script>
+    </div>
+{% endblock %}
+{% block controllerModals %}
+    {% include 'AppBundle:_template:modals/issueView.html.twig' %}
+
+{% endblock%}

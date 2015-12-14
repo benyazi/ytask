@@ -1,0 +1,98 @@
+body.layoutMain {
+    background-color: #3d3d3d;
+}
+.overrideBlock {
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.4);
+    color:#fff;
+    padding-top: 150px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 999;
+}
+.form-group {
+    position: relative;
+}
+.curtain {
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.4);
+    color:#fff;
+    padding-top: 150px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 999;
+}
+.content table.table thead tr th {
+    background-color: #ddd;
+}
+.content table.table tfoot tr th {
+    background-color: #ddd;
+}
+
+.taskList {
+    position: relative;
+    background-color: #eee;
+    border-radius: 3px;
+}
+.taskList_head {
+    position: relative;
+    padding: 10px;
+    font-weight: bold;
+}
+.taskList_body {
+    position: relative;
+    height: 400px;
+    overflow-y: scroll;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+}
+.taskList_foot {
+    position: relative;
+    padding: 10px;
+    font-weight: bold;
+}
+.issueMiniBlock {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 5px;
+    background-color: #fff;
+    border-radius: 3px;
+}
+.issueMiniBlock > div {
+    position: absolute;
+    top:0;
+    bottom: 0;
+}
+.issueMiniBlock_statusLine {
+    left:0;
+    width: 10px;
+    background-color: #0000F0;
+}
+.issueMiniBlock_infoBox {
+    left: 10px;
+    right: 40px;
+    padding: 5px;
+}
+.issueMiniBlock_rightBlock {
+    right:0;
+    width: 40px;
+}
+.issueMiniBlock_rightBlock ul.dropdown-menu {
+    left: auto;
+    right: 0;
+}
+
+.issueTabContent {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-top: none;
+}

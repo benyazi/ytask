@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+{% block mainContent %}
+    <div class="container-fluid" style="margin-top: 60px;">
+        <div class="row" style="padding-top: 15px;">
+            <div class="col-xs-12 col-sm-6">
+                <h4 style="color:#fff;">{{ project.title }}</h4>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="btn-group btn-group-sm pull-right">
+                    <a class="btn btn-default {% if helperService.isCurrent('_project_plan') %}active{% endif %}" href="{{ url('_project_plan',{'id':project.id}) }}">
+                        {% trans %}Plan{% endtrans %}
+                    </a>
+                    <a class="btn btn-default {% if helperService.isCurrent('_project_work') %}active{% endif %}" href="{{ url('_project_work',{'id':project.id}) }}">
+                        {% trans %}Work{% endtrans %}
+                    </a>
+                    <a class="btn btn-default {% if helperService.isCurrent('_project_report') %}active{% endif %}" href="{{ url('_project_report',{'id':project.id}) }}">
+                        {% trans %}Report{% endtrans %}
+                    </a>
+                </div>
+                <div class="btn-group btn-group-sm pull-right">
+                    <button onclick="ListController.updateLists();" class="btn btn-default" title="{% trans %}Update lists{% endtrans %}">
+                        <i class="fa fa-refresh"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% block body %}{% endblock %}
+    </div>
+{% endblock %}

@@ -1,0 +1,36 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+    app_security.authentication_handler: UserBundle\Handler\AuthenticationHandler
+
+services:
+    app.form.type.issue:
+        class: AppBundle\Form\Type\IssueType
+        arguments: ['@service_container']
+        tags:
+            - { name: form.type, alias: IssueType }
+    averageService:
+        class: AppBundle\AppService\AverageService
+        arguments: ['@service_container']
+    projectService:
+        class: AppBundle\AppService\ProjectService
+        arguments: ['@service_container']
+    helperService:
+        class: AppBundle\AppService\HelperService
+        arguments: ['@service_container']
+    braincrafted_bootstrap.form.type.money:
+        class: Braincrafted\Bundle\BootstrapBundle\Form\Type\MoneyType
+        tags:
+            - { name: form.type }
+    hwi_oauth.user.provider.entity:
+        class: HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
+    ib_user.oauth_user_provider:
+        class: UserBundle\Auth\OAuthProvider
+        arguments: [@session, @doctrine, @service_container]
+    authentication_handler:
+            class:  %app_security.authentication_handler%
+            public: false
+            arguments:  [@router, @session]
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

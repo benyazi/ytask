@@ -1,0 +1,51 @@
+{% extends "AppBundle:Layouts:center.html.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+{% block body %}
+<div class="ui segment" style="box-shadow: none;">
+    <div class="ui green block header" style="margin: -15px -15px 0 -15px;border-radius: .28571429rem .28571429rem 0 0;">Вход</div>
+    <div class="ui two column grid basic segment">
+        <div class="column" style="padding-right: 2rem;">
+            <div class="">
+                <form action="{{ path("fos_user_security_check") }}" method="post" class="ui form">
+                    {% if error %}
+                        <div class="ui error message">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </div>
+                    {% endif %}
+                    <input type="hidden" name="_csrf_token" value="{{ fos_csrf_provider.generateCsrfToken('authenticate') }}" />
+                    <div class="field">
+                        <label for="username">Логин / Лицевой счет</label>
+                        <input type="text" class="form-control" id="username" name="_username" value="" required="required" />
+                    </div>
+                    <div class="field">
+                        <label for="password">Пароль</label>
+                        <input type="password" class="form-control" id="password" name="_password" required="required" />
+                    </div>
+                    <div class="field">
+                        <div class="ui checkbox simple">
+                            <input type="checkbox" tabindex="0" class="hidden" id="remember_me" name="_remember_me" value="on">
+                            <label>Запомнить меня</label>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <a href="{{ url('fos_user_resetting_request') }}">Забыли пароль?</a>
+                    </div>
+                    <button class="ui green button" type="submit" id="auth_submit" name="_submit">Войти</button>
+                </form>
+            </div>
+        </div>
+        <div class="ui vertical divider"> ИЛИ </div>
+        <div class="center aligned column" style="padding-left: 2rem;">
+            <h4 class="ui header"> Войти через: </h4>
+            <div class="ui facebook button disabled">
+                <i class="facebook icon"></i>
+                Facebook
+            </div>
+            <div class="ui vk button disabled" style="margin-top: 10px;">
+                <i class="vk icon"></i>
+                Vkontakte
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

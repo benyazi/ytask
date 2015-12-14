@@ -1,0 +1,53 @@
+<div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#issueForm" aria-controls="issueForm" role="tab" data-toggle="tab">
+                {% trans %}Edit{% endtrans %}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#issueAttachments" aria-controls="issueAttachments" role="tab" data-toggle="tab">
+                {% trans %}Attachments{% endtrans %}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#issueActivity" aria-controls="issueActivity" role="tab" data-toggle="tab">
+                {% trans %}Activity{% endtrans %}
+            </a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content issueTabContent">
+        <div role="tabpanel" class="tab-pane active" id="issueForm">
+            <form id="editIssueForm" onsubmit="return false;">
+            {{ form_row(form.project) }}
+            <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    {{ form_row(form.status2) }}
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    {{ form_row(form.priority) }}
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    {{ form_row(form.type) }}
+                </div>
+            </div>
+            {{ form_row(form.title) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.status) }}
+            <div class="">
+                <button class="btn btn-success" onclick="ListController.saveIssue();">
+                    {% trans %}Save issue{% endtrans %}
+                </button>
+            </div>
+            </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="issueAttachments">
+            Attachment
+        </div>
+        <div role="tabpanel" class="tab-pane" id="issueActivity">
+            Activity
+        </div>
+    </div>
+</div>
