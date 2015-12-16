@@ -5,6 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class IssueType extends AbstractType
 {
@@ -20,6 +21,7 @@ class IssueType extends AbstractType
         $builder
             ->add('project', 'entity', array(
                 'class' => 'AppBundle:Projects',
+                'required' => true,
                 'choice_label' => 'title',
                 'label' => $this->container->get('translator')->trans('Project')
             ))
@@ -42,9 +44,15 @@ class IssueType extends AbstractType
                 'class' => 'AppBundle:IssueStatuses',
                 'choice_label' => 'name',
                 'label' => $this->container->get('translator')->trans('Status'),
-                'choice_translation_domain' => 'AppBundle:AppBundle',
             ))
-            ->add('status', 'choice', array(
+            ->add('userAssigned', 'entity', array(
+                'class' => 'UserBundle:User',
+                'choice_label' => 'name',
+                'label' => $this->container->get('translator')->trans('Assigned user'),
+                'required' => false,
+                'empty_data' => null
+            ))
+            /*->add('status', 'choice', array(
                 'choices'  => array(
                     'NEW' => "Новая",
                     'ASSIGNED' => "Назначена",
@@ -53,6 +61,17 @@ class IssueType extends AbstractType
                     'CLOSED' => "Закрыта",
                 ),
                 'label' => $this->container->get('translator')->trans('Step'),
+            ))*/
+            ->add('dateDue', 'date', array(
+                'label' => $this->container->get('translator')->trans('Due date'),
+                'widget' => 'single_text',
+                'format' => 'dd.MM.yyyy',
+                'required' => false,
+                'attr' => [
+                    'class' => 'datepicker',
+                    'data-provide' => 'datepicker',
+                    'data-date-format' => 'dd.mm.yyyy'
+                ],
             ))
             ->add('priority', 'entity', array(
                 'class' => 'AppBundle:IssuePriority',

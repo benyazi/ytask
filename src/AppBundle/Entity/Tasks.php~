@@ -444,32 +444,4 @@ class Tasks
     {
         return $this->userCreate;
     }
-    /**
-     * @var \AppBundle\Entity\User
-     */
-    private $userAssigned;
-
-
-    /**
-     * Set userAssigned
-     *
-     * @param \UserBundle\Entity\User $userAssigned
-     * @return Tasks
-     */
-    public function setUserAssigned(\UserBundle\Entity\User $userAssigned = null)
-    {
-        $this->userAssigned = $userAssigned;
-
-        return $this;
-    }
-
-    /**
-     * Get userAssigned
-     *
-     * @return \UserBundle\Entity\User
-     */
-    public function getUserAssigned()
-    {
-        return $this->userAssigned;
-    }
 }

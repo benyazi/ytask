@@ -4,11 +4,21 @@ parameters:
     app_security.authentication_handler: UserBundle\Handler\AuthenticationHandler
 
 services:
+    my.subscriber:
+        class: AppBundle\Subscriber\TasksSubscriber
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
     app.form.type.issue:
         class: AppBundle\Form\Type\IssueType
         arguments: ['@service_container']
         tags:
             - { name: form.type, alias: IssueType }
+    app.form.type.project:
+        class: AppBundle\Form\Type\ProjectType
+        arguments: ['@service_container']
+        tags:
+            - { name: form.type, alias: ProjectType }
     averageService:
         class: AppBundle\AppService\AverageService
         arguments: ['@service_container']

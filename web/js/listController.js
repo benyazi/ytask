@@ -50,9 +50,22 @@ ListController.prototype.getList = function(listName) {
 ListController.prototype.addCurtain = function(listName){
     $("#list_"+listName).prepend('<div class="curtain"><div class="curtain-loader"></div></div>');
 };
-
 ListController.prototype.removeCurtain = function(listName){
     $("#list_"+listName).find('.curtain').remove();
+};
+
+ListController.prototype.addGlobalCurtain = function(){
+    $(".workRow").prepend('<div class="curtain"><div class="curtain-loader"></div></div>');
+};
+ListController.prototype.removeGlobalCurtain = function(){
+    $(".workRow").find('.curtain').remove();
+};
+
+ListController.prototype.addModalCurtain = function(modalId){
+    $("#"+modalId+" .modal-body").prepend('<div class="curtain"><div class="curtain-loader"></div></div>');
+};
+ListController.prototype.removeModalCurtain = function(modalId){
+    $("#"+modalId+" .modal-body").find('.curtain').remove();
 };
 
 ListController.prototype.putHtmlContent = function(listName,html){
@@ -61,10 +74,12 @@ ListController.prototype.putHtmlContent = function(listName,html){
 
 ListController.prototype.viewIssue = function(issueId) {
     var me = this;
+    me.addGlobalCurtain();
     this.loadIssueForm(issueId, function(){
         me.$issueId = issueId;
         $("#issueViewModal").modal("show");
         me.updateTextarea();
+        me.removeGlobalCurtain();
     });
 };
 
@@ -73,6 +88,9 @@ ListController.prototype.updateTextarea = function(){
         fullscreenable: false,
         btns: ['bold', 'italic', 'underline', 'strikethrough', '|', 'unorderedList', 'orderedList','|','btnGrp-lists'],
         lang: 'ru'
+    });
+    $(".datepicker").datepicker({
+        language: 'ru'
     });
 };
 
@@ -94,7 +112,7 @@ ListController.prototype.loadIssueForm = function(issueId, callback, isEdit) {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: me.config.getIssueUrl+"?issueId="+issueId+"&isEdit="+isEdit,
+        url: me.config.getIssueUrl+"?issueId="+issueId+"&isEdit="+isEdit+"&projectId="+projectId,
         data: data,
         success: function(data){
             //console.log(data);
@@ -107,15 +125,15 @@ ListController.prototype.loadIssueForm = function(issueId, callback, isEdit) {
             }
         },
         complete: function() {
-            //me.removeCurtain(listName);
+            me.removeGlobalCurtain();
         }
     });
 };
 ListController.prototype.saveIssue = function() {
     var me = this;
+    me.addModalCurtain("issueViewModal");
     var form = $("#editIssueForm");
     var data = form.serialize();
-    //console.log(data);
     $.ajax({
         type: "POST",
         dataType: "json",
@@ -131,11 +149,13 @@ ListController.prototype.saveIssue = function() {
                     $("#issueViewModal").modal("hide");
                 }
             }
-            else {
-
+            else if(!data.success && data.html != undefined) {
+                $("#issueViewModal .modal-body").html(data.html);
+                me.updateTextarea();
             }
         },
         complete: function() {
+            me.removeModalCurtain("issueViewModal");
             //me.removeCurtain(listName);
         }
     });

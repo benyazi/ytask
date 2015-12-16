@@ -11,8 +11,8 @@ class Builder extends ContainerAware
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $menu = $factory->createItem('root');
-        $menu->addChild('Dashboard', array('route' => '_dashboard'));
-        $menu->addChild('Проекты', array('route' => '_projects'));
+        $menu->addChild($this->container->get('translator')->trans('Dashboard'), array('route' => '_dashboard'));
+        $menu->addChild($this->container->get('translator')->trans('Projects'), array('route' => '_projects'));
         /*$loggedUser = $this->container->get('security.token_storage')->getToken()->getUser();
         if($loggedUser!="anon.") {
             $roles = $loggedUser->getRoles();
@@ -72,7 +72,8 @@ class Builder extends ContainerAware
             foreach($roles as $role) {
                 $rolesArr[] = $role;
             }
-            $menu->addChild($this->container->get('translator')->trans('Logout'), array('route' => 'fos_user_security_logout'));
+            $menu->addChild($this->container->get('translator')->trans('Profile'), array());
+            $menu[$this->container->get('translator')->trans('Profile')]->addChild($this->container->get('translator')->trans('Logout'), array('route' => 'fos_user_security_logout'));
         }
         else {
             $menu->addChild($this->container->get('translator')->trans('Login'), array('route' => 'fos_user_security_login'));

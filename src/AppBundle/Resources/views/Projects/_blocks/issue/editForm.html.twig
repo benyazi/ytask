@@ -1,4 +1,19 @@
 <div>
+    {% for flash_message in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+    {% for flash_message in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+    {% for flash_message in app.session.flashbag.get('notice') %}
+        <div class="alert alert-warning">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
@@ -14,6 +29,11 @@
         <li role="presentation">
             <a href="#issueActivity" aria-controls="issueActivity" role="tab" data-toggle="tab">
                 {% trans %}Activity{% endtrans %}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#issueComments" aria-controls="issueComments" role="tab" data-toggle="tab">
+                {% trans %}Comments{% endtrans %}
             </a>
         </li>
     </ul>
@@ -35,7 +55,11 @@
             </div>
             {{ form_row(form.title) }}
             {{ form_row(form.description) }}
-            {{ form_row(form.status) }}
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">{{ form_row(form.userAssigned) }}</div>
+                <div class="col-xs-12 col-sm-6" style="position: relative;">{{ form_row(form.dateDue) }}</div>
+            </div>
+
             <div class="">
                 <button class="btn btn-success" onclick="ListController.saveIssue();">
                     {% trans %}Save issue{% endtrans %}
@@ -44,10 +68,44 @@
             </form>
         </div>
         <div role="tabpanel" class="tab-pane" id="issueAttachments">
-            Attachment
+            {% for attachment in attachments %}
+                {{ attachment.createDate | date("d.m.Y H:i") }}
+            {% else %}
+                {% trans %}Empty attachment list{% endtrans %}
+            {% endfor %}
+        </div>
+        <div role="tabpanel" class="tab-pane" id="issueComments">
+            {% for comment in comments %}
+                {{ comment.createDate | date("d.m.Y H:i") }}
+            {% else %}
+                {% trans %}Empty comment list{% endtrans %}
+            {% endfor %}
         </div>
         <div role="tabpanel" class="tab-pane" id="issueActivity">
-            Activity
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>{% trans %}Date{% endtrans %}</th>
+                    <th>{% trans %}User{% endtrans %}</th>
+                    <th>{% trans %}Action{% endtrans %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for history in histories %}
+                        <tr>
+                            <td>{{ history.historyDate | date("d.m.Y H:i") }}</td>
+                            <td>{{ history.user.name }}</td>
+                            <td>{{ history.action | raw }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">
+                                {% trans %}Not activity{% endtrans %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

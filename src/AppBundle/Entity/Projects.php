@@ -17,7 +17,7 @@ class Projects
     /**
      * @var string
      */
-    private $key;
+    private $name;
 
     /**
      * @var string
@@ -69,26 +69,26 @@ class Projects
     }
 
     /**
-     * Set key
+     * Set name
      *
-     * @param string $key
+     * @param string $name
      * @return Projects
      */
-    public function setKey($key)
+    public function setName($name)
     {
-        $this->key = $key;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get key
+     * Get name
      *
      * @return string 
      */
-    public function getKey()
+    public function getName()
     {
-        return $this->key;
+        return $this->name;
     }
 
     /**
@@ -193,6 +193,6 @@ class Projects
         return $this->id;
     }
     public function __toString() {
-        return $this->getKey();
+        return $this->getName();
     }
 }

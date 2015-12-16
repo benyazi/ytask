@@ -9,6 +9,7 @@
       <index name="resolution_id" columns="resolution_id"/>
       <index name="priority_id" columns="priority_id"/>
       <index name="sprint_id" columns="sprint_id"/>
+      <index name="user_assigned" columns="user_assigned"/>
     </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
@@ -21,6 +22,11 @@
     <field name="dateClosed" type="datetime" column="date_closed" nullable="true"/>
     <field name="status" type="string" column="status" nullable="false"/>
     <field name="deleted" type="integer" column="deleted" nullable="false"/>
+    <many-to-one field="priority" target-entity="IssuePriority">
+      <join-columns>
+        <join-column name="priority_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
     <many-to-one field="sprint" target-entity="Sprints">
       <join-columns>
         <join-column name="sprint_id" referenced-column-name="id"/>
@@ -31,19 +37,9 @@
         <join-column name="status_id" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="priority" target-entity="IssuePriority">
-      <join-columns>
-        <join-column name="priority_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
     <many-to-one field="resolution" target-entity="IssueResolutions">
       <join-columns>
         <join-column name="resolution_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="userCreate" target-entity="UserBundle\Entity\User">
-      <join-columns>
-        <join-column name="user_create" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
     <many-to-one field="type" target-entity="IssueTypes">
@@ -54,6 +50,16 @@
     <many-to-one field="project" target-entity="Projects">
       <join-columns>
         <join-column name="project_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="userCreate" target-entity="UserBundle\Entity\User">
+      <join-columns>
+        <join-column name="user_create" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="userAssigned" target-entity="UserBundle\Entity\User">
+      <join-columns>
+        <join-column name="user_assigned" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

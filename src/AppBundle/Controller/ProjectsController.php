@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Projects;
 use AppBundle\Entity\Tasks;
 use AppBundle\Form\Type\IssueType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -20,7 +21,7 @@ class ProjectsController extends Controller
         $projects = $this->getDoctrine()->getRepository('AppBundle:Projects')->findAll();
         $form = $this->get('form.factory')->createNamedBuilder('', 'form', [], [])
             ->add('q', 'text', array(
-                'label' => 'Поиск дома',
+                'label' => 'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ',
                 'required' => false,
                 'empty_data' => null
             ));
@@ -95,10 +96,24 @@ class ProjectsController extends Controller
      */
     public function getIssueAction(Request $request)
     {
+        $histories = [];
+        $attachments = [];
+        $comments = [];
         $return = ["success"=>false];
         if($request->get("isEdit")) {
             $issueId = $request->get("issueId");
             $issue = $this->getDoctrine()->getRepository('AppBundle:Tasks')->find($issueId);
+
+            if(!empty($issue)) {
+                $histories = $this->getDoctrine()->getRepository('AppBundle:HistoryLog')->findBy(
+                    [
+                        "task" => $issue
+                    ],
+                    [
+                        "historyDate" => "DESC"
+                    ]
+                );
+            }
         }
         else {
             $projectId = $request->get("projectId");
@@ -112,6 +127,9 @@ class ProjectsController extends Controller
 
         $return["html"] = $this->get('twig')->render('AppBundle:Projects:_blocks/issue/editForm.html.twig', [
             "issue" => $issue,
+            "histories" => $histories,
+            "attachments" => $attachments,
+            "comments" => $comments,
             "form" => $form->createView()
         ]);
         $return["success"] = true;
@@ -122,6 +140,14 @@ class ProjectsController extends Controller
      */
     public function saveIssueAction(Request $request)
     {
+        $IssueTypeParams = $request->get("IssueType");
+        $histories = [];
+        $attachments = [];
+        $comments = [];
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        if($user=="anon.") {
+            $user = null;
+        }
         $return = ["success"=>false,"error"=>[]];
         if(empty($request->get("issueId"))) {
             $issue = new Tasks();
@@ -130,11 +156,17 @@ class ProjectsController extends Controller
             $issue = $this->getDoctrine()->getRepository("AppBundle:Tasks")->find($request->get("issueId"));
         }
         if(empty($issue)) {
+            $project = $this->getDoctrine()->getRepository("AppBundle:Projects")->find($IssueTypeParams["project"]);
             $issue = new Tasks();
+            $issues = $this->getDoctrine()->getRepository("AppBundle:Tasks")->findBy(
+                ["project" => $project]
+            );
+            $issue->setName($project->getName()."-".(count($issues)+1));
+            $issue->setDateCreate(new \DateTime());
+            $issue->setUserCreate($user);
         }
         $issue->setDeleted(0);
         $issue->setStatus("NEW");
-        $issue->setDateCreate(new \DateTime());
         //$issue->setUserCreate($user);
         $form = $this->createForm("IssueType", $issue, array('csrf_protection' => false));
         $form->handleRequest($request);
@@ -143,9 +175,16 @@ class ProjectsController extends Controller
             try {
                 $em->persist($issue);
                 $em->flush();
+                $this->addFlash(
+                    'success',
+                    'Success! Issue saved.'
+                );
                 $return["success"] = true;
                 $return["html"] = $this->get('twig')->render('AppBundle:Projects:_blocks/issue/editForm.html.twig', [
                     "issue" => $issue,
+                    "histories" => $histories,
+                    "attachments" => $attachments,
+                    "comments" => $comments,
                     "form" => $form->createView()
                 ]);
             }
@@ -154,9 +193,106 @@ class ProjectsController extends Controller
             }
         }
         else {
+            $this->addFlash(
+                'error',
+                'Error! Invalid form data.'
+            );
             foreach($form->getErrors() as $error) {
                 $return["error"][] = $error->getMessage();
             }
+            $return["html"] = $this->get('twig')->render('AppBundle:Projects:_blocks/issue/editForm.html.twig', [
+                "issue" => $issue,
+                "histories" => $histories,
+                "attachments" => $attachments,
+                "comments" => $comments,
+                "form" => $form->createView()
+            ]);
+        }
+        return new JsonResponse($return);
+    }
+    /**
+     * @Route("/project/getProject", name="_project_get_project")
+     */
+    public function getProjectAction(Request $request)
+    {
+        $return = ["success"=>false];
+        if($request->get("isEdit")) {
+            $projectId = $request->get("projectId");
+            $project = $this->getDoctrine()->getRepository('AppBundle:Projects')->find($projectId);
+            if(!empty($project)) {
+            }
+        }
+        else {
+            $project = new Projects();
+        }
+
+        //$form = $this->get('form.factory')->createNamedBuilder('', 'form', [], [])
+        $form = $this->createForm("ProjectType", $project, array('csrf_protection' => false));
+
+        $return["html"] = $this->get('twig')->render('AppBundle:Projects:_blocks/issue/projectForm.html.twig', [
+            "project" => $project,
+            "form" => $form->createView()
+        ]);
+        $return["success"] = true;
+        return new JsonResponse($return);
+    }
+    /**
+     * @Route("/project/saveProject", name="_project_save_project")
+     */
+    public function saveProjectAction(Request $request)
+    {
+        $ProjectTypeParams = $request->get("ProjectType");
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        if($user=="anon.") {
+            $user = null;
+        }
+        $return = ["success"=>false,"error"=>[]];
+        if(empty($request->get("projectId"))) {
+            $project = new Projects();
+        }
+        else{
+            $project = $this->getDoctrine()->getRepository("AppBundle:Projects")->find($request->get("projectId"));
+        }
+        if(empty($project)) {
+            $project = new Projects();
+            $project->setDateCreate(new \DateTime());
+            $project->setVisibled(1);
+            $project->setDeleted(0);
+        }
+        //$issue->setUserCreate($user);
+        $form = $this->createForm("ProjectType", $project, array('csrf_protection' => false));
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            try {
+                $em->persist($project);
+                $em->flush();
+                $this->addFlash(
+                    'success',
+                    'Success! Project saved.'
+                );
+                $return["success"] = true;
+                $return["html"] = $this->get('twig')->render('AppBundle:Projects:_blocks/issue/projectForm.html.twig', [
+                    "project" => $project,
+                    "form" => $form->createView()
+                ]);
+            }
+            catch(Exception $e){
+                $return["error"][] = $e->getMessage();
+            }
+        }
+        else {
+            $this->addFlash(
+                'error',
+                'Error! Invalid form data.'
+            );
+            foreach($form->getErrors() as $error) {
+                $return["error"][] = $error->getMessage();
+            }
+            $return["html"] = $this->get('twig')->render('AppBundle:Projects:_blocks/issue/projectForm.html.twig', [
+                "project" => $project,
+                "form" => $form->createView()
+            ]);
         }
         return new JsonResponse($return);
     }

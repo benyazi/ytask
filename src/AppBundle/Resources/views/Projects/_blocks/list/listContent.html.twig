@@ -8,6 +8,20 @@
             <div class="issueMiniBlock_statusLine"></div>
             <div class="issueMiniBlock_infoBox" style="cursor: pointer;" onclick="ListController.viewIssue({{ issue.id }});">
                 <div>{{ issue.name }} | {{ issue.title }}</div>
+                <div>
+                    {% if issue.userAssigned != null %}
+                        <span class="label label-default">{{ issue.userAssigned.name }}</span>
+                    {% endif %}
+                    {% if issue.dateDue != null %}
+                        {% set labelClass = "default" %}
+                        {% if date(issue.dateDue) < date("now") %}
+                            {% set labelClass = "danger" %}
+                        {% elseif date(issue.dateDue) == date("now")  %}
+                            {% set labelClass = "warning" %}
+                        {% endif %}
+                        <span class="label label-{{ labelClass }}">{{ issue.dateDue | date("d.m.Y") }}</span>
+                    {% endif %}
+                </div>
             </div>
             <div class="issueMiniBlock_rightBlock">
                 <div class="dropdown">
@@ -30,7 +44,9 @@
     {% endfor %}
 </div>
 <div class="taskList_foot">
+    {% if list.name == "TODO" %}
     <button class="btn btn-primary" onclick="ListController.newIssue('{{ list.name }}')">
         {% trans %}Add new issue{% endtrans %}
     </button>
+    {% endif %}
 </div>

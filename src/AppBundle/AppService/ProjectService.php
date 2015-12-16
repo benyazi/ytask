@@ -20,23 +20,26 @@ class ProjectService
         $status = "NEW";
         switch($list) {
             case "TODO":
-                $status = "ASSIGNED";
+                $statusIds = [1];
                 break;
             case "INPROGRESS":
-                $status = "INPROGRESS";
+                $statusIds = [2,4];
                 break;
             case "TESTING":
-                $status = "COMPLETED";
+                $statusIds = [3];
                 break;
             case "DONE":
-                $status = "CLOSED";
+                $statusIds = [5];
                 break;
         }
-
+        $statusArray = [];
+        foreach($statusIds as $id) {
+            $statusArray[] = $this->container->get("doctrine")->getRepository('AppBundle:IssueStatuses')->find($id);
+        }
         $issues =  $this->container->get("doctrine")->getRepository('AppBundle:Tasks')->findBy(
             [
                 "project" => $project,
-                "status" => $status
+                "status2" => $statusArray
             ]
         );
 
