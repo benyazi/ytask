@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: ru
+    appversion: 0.0.2a
 
 framework:
     #esi:             ~
@@ -21,14 +22,14 @@ framework:
     #serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
-        assets_version: 0.0.1
+        assets_version: "%appversion%"
         assets_version_format:  "%%1$s?v=%%2$s"
         packages:
              css:
-                version: 0.0.1
+                version: "%appversion%"
                 version_format: "%%1$s?v=%%2$s"
              jsApp:
-                version: 0.0.1
+                version: "%appversion%"
                 version_format: "%%1$s?v=%%2$s"
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
@@ -48,6 +49,7 @@ twig:
         fos_csrf_provider: "@form.csrf_provider"
         projectService: "@projectService"
         helperService: "@helperService"
+        version: "%appversion%"
     form:
         resources: ['bootstrap_3_layout.html.twig']
 

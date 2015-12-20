@@ -3,11 +3,20 @@
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-10 col-lg-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading">{% trans %}Projects{% endtrans %}</div>
+                <div class="panel-heading">{% trans %}Assigned projects{% endtrans %}</div>
                 <div class="panel-body">
                 <table class="table table-condensed table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans %}Project title{% endtrans %}</th>
+                        <th>{% trans %}Role in project{% endtrans %}</th>
+                        <th>{% trans %}Action{% endtrans %}</th>
+                    </tr>
+                    </thead>
                     <tbody>
-                        {% for project in projects %}
+                        {% for projectUser in projectUsers %}
+                            {% set project = projectUser.project %}
                             <tr>
                                 <td>{{ project.id }}</td>
                                 <td>
@@ -15,6 +24,7 @@
                                         <h4 class="media-heading">{{ project.title }}</h4>
                                     </a>
                                 </td>
+                                <td>{{ projectUser.role.name }}</td>
                                 <td>
                                     <button onclick="ProjectController.viewProject({{ project.id }})" class="btn btn-primary">
                                         {% trans %}Edit{% endtrans %}

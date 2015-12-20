@@ -108,4 +108,32 @@ class ProjectUsers
     {
         return $this->user;
     }
+    /**
+     * @var \AppBundle\Entity\ProjectRoles
+     */
+    private $role;
+
+
+    /**
+     * Set role
+     *
+     * @param \AppBundle\Entity\ProjectRoles $role
+     * @return ProjectUsers
+     */
+    public function setRole(\AppBundle\Entity\ProjectRoles $role = null)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return \AppBundle\Entity\ProjectRoles 
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
 }

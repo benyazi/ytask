@@ -82,30 +82,32 @@
             {% endfor %}
         </div>
         <div role="tabpanel" class="tab-pane" id="issueActivity">
-            <table class="table table-hover table-condensed">
-                <thead>
-                <tr>
-                    <th>{% trans %}Date{% endtrans %}</th>
-                    <th>{% trans %}User{% endtrans %}</th>
-                    <th>{% trans %}Action{% endtrans %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {% for history in histories %}
-                        <tr>
-                            <td>{{ history.historyDate | date("d.m.Y H:i") }}</td>
-                            <td>{{ history.user.name }}</td>
-                            <td>{{ history.action | raw }}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="3">
-                                {% trans %}Not activity{% endtrans %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="ui feed">
+                {% for history in histories %}
+                    <div class="event">
+                        <div class="label">
+                            <img src="{{ helperService.getRandomAvatar() }}">
+                        </div>
+                        <div class="content">
+                            <div class="summary">
+                                <a class="user">
+                                    {{ history.user.name }}
+                                </a> {{ history.action | raw }}
+                                <div class="date">
+                                    {{ history.historyDate | date("d.m.Y H:i") }}
+                                </div>
+                            </div>
+                            <div class="meta">
+                                <a class="like">
+                                    <i class="like icon"></i> 4 Likes
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div>{% trans %}Not activity{% endtrans %}</div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>

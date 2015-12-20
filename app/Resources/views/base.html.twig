@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
     <meta charset="UTF-8" />
-    <title>YTASK</title>
+    <title>YTASK {{ version }}</title>
     {% block stylesheetsHead %}
         {% stylesheets
         'bower_components/bootstrap/dist/css/bootstrap.min.css'
@@ -12,6 +12,16 @@
         'bower_components/components-font-awesome/css/font-awesome.min.css'
         'datatables/css/jquery.dataTables.min.css'
         'bower_components/trumbowyg/dist/ui/trumbowyg.min.css'
+        'css/overlayBootstrap.css'
+        'semantic/components/button.min.css'
+        'semantic/components/icon.min.css'
+        'semantic/components/label.min.css'
+        'semantic/components/dropdown.min.css'
+        'semantic/components/transition.min.css'
+        'semantic/components/feed.min.css'
+        'semantic/components/image.min.css'
+        'semantic/components/checkbox.min.css'
+        'css/overlaySemanticUI.css'
         'css/base.css'
         filter='cssrewrite' output='compiled/app.css' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
@@ -39,7 +49,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('_dashboard',{}) }}">YTask</a>
+            <a class="navbar-brand" href="{{ url('_dashboard',{}) }}">YTask {{ version }}</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -62,6 +72,9 @@
     'bower_components/moment-timezone/builds/moment-timezone-with-data.min.js'
     'datatables/js/jquery.dataTables.min.js'
     'bower_components/trumbowyg/dist/trumbowyg.min.js'
+    'semantic/components/dropdown.min.js'
+    'semantic/components/transition.min.js'
+    'semantic/components/checkbox.min.js'
     'js/listController.js'
     'js/projectController.js'
     output='compiled/appdown.js' %}

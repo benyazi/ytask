@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Projects;
+use AppBundle\Entity\ProjectUsers;
 use AppBundle\Entity\Tasks;
 use AppBundle\Form\Type\IssueType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,15 +19,12 @@ class ProjectsController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $projects = $this->getDoctrine()->getRepository('AppBundle:Projects')->findAll();
-        $form = $this->get('form.factory')->createNamedBuilder('', 'form', [], [])
-            ->add('q', 'text', array(
-                'label' => '����� ����',
-                'required' => false,
-                'empty_data' => null
-            ));
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $projectUsers = $this->getDoctrine()->getRepository('AppBundle:ProjectUsers')->findBy(
+            ["user"=>$user]
+        );
         return $this->render('AppBundle:Projects:index.html.twig', [
-            "projects" => $projects
+            "projectUsers" => $projectUsers
         ]);
     }
     /**
@@ -241,6 +239,7 @@ class ProjectsController extends Controller
      */
     public function saveProjectAction(Request $request)
     {
+        $isNew = false;
         $ProjectTypeParams = $request->get("ProjectType");
         $user = $this->get('security.token_storage')->getToken()->getUser();
         if($user=="anon.") {
@@ -249,11 +248,13 @@ class ProjectsController extends Controller
         $return = ["success"=>false,"error"=>[]];
         if(empty($request->get("projectId"))) {
             $project = new Projects();
+            $isNew=true;
         }
         else{
             $project = $this->getDoctrine()->getRepository("AppBundle:Projects")->find($request->get("projectId"));
         }
         if(empty($project)) {
+            $isNew=true;
             $project = new Projects();
             $project->setDateCreate(new \DateTime());
             $project->setVisibled(1);
@@ -271,6 +272,14 @@ class ProjectsController extends Controller
                     'success',
                     'Success! Project saved.'
                 );
+                if($isNew) {
+                    $projectUser = new ProjectUsers();
+                    $projectUser->setProject($project);
+                    $projectUser->setUser($user);
+                    $projectUser->setRole($this->getDoctrine()->getRepository("AppBundle:ProjectRoles")->find(1));
+                    $em->persist($projectUser);
+                    $em->flush();
+                }
                 $return["success"] = true;
                 $return["html"] = $this->get('twig')->render('AppBundle:Projects:_blocks/issue/projectForm.html.twig', [
                     "project" => $project,

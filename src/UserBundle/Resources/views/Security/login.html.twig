@@ -12,7 +12,7 @@
                     {% endif %}
                     <input type="hidden" name="_csrf_token" value="{{ fos_csrf_provider.generateCsrfToken('authenticate') }}" />
                     <div class="form-group">
-                        <label for="username">Логин / Лицевой счет</label>
+                        <label for="username">Логин</label>
                         <input type="text" class="form-control" id="username" name="_username" value="" required="required" />
                     </div>
                     <div class="form-group">
@@ -20,10 +20,15 @@
                         <input type="password" class="form-control" id="password" name="_password" required="required" />
                     </div>
                     <div class="form-group">
-                        <div class="ui checkbox simple">
+                        <div class="ui checkbox">
                             <input type="checkbox" tabindex="0" class="hidden" id="remember_me" name="_remember_me" value="on">
                             <label>Запомнить меня</label>
                         </div>
+                        <script>
+                            $( document ).ready(function() {
+                                $('.ui.checkbox').checkbox({});
+                            });
+                        </script>
                     </div>
                     <div style="margin-bottom:15px;">
                         <a href="{{ url('fos_user_resetting_request') }}">Забыли пароль?</a>

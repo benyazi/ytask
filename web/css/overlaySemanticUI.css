@@ -1,0 +1,8 @@
+.ui.button {
+    font-family: inherit;
+    border-radius: 1.5rem;
+}
+.ui.feed>.event>.label {
+    font-size: inherit!important;
+    padding: 0!important;
+}

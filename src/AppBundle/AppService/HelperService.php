@@ -21,4 +21,21 @@ class HelperService
         }
         return false;
     }
+
+    public function getRandomAvatar() {
+        $array = [
+            "daniel.jpg",
+            "elliot.jpg",
+            "elyse.png",
+            "helen.jpg",
+            "jenny.jpg",
+            "kristy.png",
+            "matthew.png",
+            "molly.png",
+            "steve.jpg",
+            "stevie.jpg",
+            "veronika.jpg"
+        ];
+        return "/img/avatars/".$array[array_rand($array)];
+    }
 }

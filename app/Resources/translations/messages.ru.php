@@ -22,4 +22,11 @@ return [
     'Save issue' => 'Сохранить задачу',
     'Close' => 'Закрыть',
     'View issue' => 'Информация о задаче',
+    'Set issue status to OPEN' => 'Задаче установлен статус "Открыта"',
+    'Set issue status to INPROGRESS' => 'Задаче установлен статус "В процессе"',
+    'Set issue status to RESOLVED' => 'Задаче установлен статус "Выполнено"',
+    'Set issue status to REOPENED' => 'Задаче установлен статус "Переоткрыта"',
+    'Set issue status to CLOSED' => 'Задаче установлен статус "Закрыта"',
+    'In issue updated rows' => 'В задаче были изменены следующие данные',
+    'Success! Issue saved.' => 'Успех. Задача сохранена.',
 ];

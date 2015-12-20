@@ -24,17 +24,16 @@
                 </div>
             </div>
             <div class="issueMiniBlock_rightBlock">
-                <div class="dropdown">
-                    <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="javascript:;" onclick="ListController.viewIssue({{ issue.id }});">{% trans %}View issue{% endtrans %}</a></li>
-                        <li><a href="#">{% trans %}Send to{% endtrans %}</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">{% trans %}Close issue{% endtrans %}</a></li>
-                    </ul>
+                <div id="listContent_rightMenu_issueMenu_{{ issue.id }}" class="ui dropdown">
+                    <i class="dropdown icon"></i>
+                    <div class="menu" style="left:auto;right: 0;">
+                        <div class="item" onclick="ListController.viewIssue({{ issue.id }});">{% trans %}View issue{% endtrans %}</div>
+                        <div class="item">{% trans %}Close issue{% endtrans %}</div>
+                    </div>
                 </div>
+                <script>
+                    $("#listContent_rightMenu_issueMenu_{{ issue.id }}").dropdown({});
+                </script>
             </div>
         </div>
     {% else %}
@@ -45,7 +44,8 @@
 </div>
 <div class="taskList_foot">
     {% if list.name == "TODO" %}
-    <button class="btn btn-primary" onclick="ListController.newIssue('{{ list.name }}')">
+    <button class="ui button secondary" onclick="ListController.newIssue('{{ list.name }}')">
+        <i class="plus icon"></i>
         {% trans %}Add new issue{% endtrans %}
     </button>
     {% endif %}

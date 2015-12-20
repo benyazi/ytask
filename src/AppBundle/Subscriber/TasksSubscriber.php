@@ -87,25 +87,25 @@ class TasksSubscriber implements EventSubscriber
                             //Типа статус был изменен
                             switch($this->changeSet["status"][1]) {
                                 case 1:
-                                    $action = $this->container->get('translator')->trans('Set issue status to OPEN.');
+                                    $action = $this->container->get('translator')->trans('Set issue status to OPEN').".";
                                     break;
                                 case 2:
-                                    $action = $this->container->get('translator')->trans('Set issue status to INPROGRESS.');
+                                    $action = $this->container->get('translator')->trans('Set issue status to INPROGRESS').".";
                                     break;
                                 case 3:
-                                    $action = $this->container->get('translator')->trans('Set issue status to RESOLVED.');
+                                    $action = $this->container->get('translator')->trans('Set issue status to RESOLVED').".";
                                     break;
                                 case 4:
-                                    $action = $this->container->get('translator')->trans('Set issue status to REOPENED.');
+                                    $action = $this->container->get('translator')->trans('Set issue status to REOPENED').".";
                                     break;
                                 case 5:
-                                    $action = $this->container->get('translator')->trans('Set issue status to CLOSED.');
+                                    $action = $this->container->get('translator')->trans('Set issue status to CLOSED').".";
                                     break;
                             }
                         }
                         elseif(count($this->changeSet)>0) {
                             //Чтото было обновлено
-                            $action = $this->container->get('translator')->trans('In issue updated rows:')."</br>";
+                            $action = $this->container->get('translator')->trans('In issue updated rows').":</br>";
                             foreach ($this->changeSet as $key=>$data) {
                                 for($i=0;$i<=1;$i++) {
                                     if($data[$i] instanceof \DateTime) {

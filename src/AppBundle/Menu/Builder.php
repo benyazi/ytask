@@ -11,8 +11,11 @@ class Builder extends ContainerAware
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $menu = $factory->createItem('root');
-        $menu->addChild($this->container->get('translator')->trans('Dashboard'), array('route' => '_dashboard'));
-        $menu->addChild($this->container->get('translator')->trans('Projects'), array('route' => '_projects'));
+        $loggedUser = $this->container->get('security.token_storage')->getToken()->getUser();
+        if($loggedUser!="anon.") {
+            $menu->addChild($this->container->get('translator')->trans('Dashboard'), array('route' => '_dashboard'));
+            $menu->addChild($this->container->get('translator')->trans('Projects'), array('route' => '_projects'));
+        }
         /*$loggedUser = $this->container->get('security.token_storage')->getToken()->getUser();
         if($loggedUser!="anon.") {
             $roles = $loggedUser->getRoles();
